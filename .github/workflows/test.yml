@@ -9,17 +9,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Descargar el repo
       - name: Descargar repo
         uses: actions/checkout@v4
 
+      # Instalar Python
       - name: Instalar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      # Instalar dependencias si existen
       - name: Instalar dependencias
         run: |
-          pip install -r requirements.txt
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; else echo "No dependencies"; fi
 
+      # Instalar pytest por si no está en requirements.txt
+      - name: Instalar pytest
+        run: pip install pytest
+
+      # Ejecutar pruebas
       - name: Ejecutar pruebas
         run: pytest -v
